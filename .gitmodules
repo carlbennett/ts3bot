@@ -1,0 +1,3 @@
+[submodule "TS3PHPFramework"]
+	path = TS3PHPFramework
+	url = git@github.com:carlbennett/TS3PHPFramework.git
