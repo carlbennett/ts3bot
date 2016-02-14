@@ -7,6 +7,8 @@
 
 ## Installation
 1. Clone the repository locally.
+2. Run ```git submodule update``` to download the ```TS3PHPFramework```
+   dependency.
 2. Ensure the execute bit is enabled (i.e. unix permissions 0755)
    for ```/teamspeak-automation.sh``` and that ```/usr/bin/php``` exists.
 3. Copy the ```/teamspeak-automation.sample.json```
