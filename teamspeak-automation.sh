@@ -1,7 +1,10 @@
 #!/bin/sh
 
 cd /opt/teamspeak-automation/
-php -q -d 'newrelic.appname="TeamSpeak Automation"' -f ./teamspeak-automation.php
+php -q                                           \
+    -d 'date.timezone="Etc/UTC"'                 \
+    -d 'newrelic.appname="TeamSpeak Automation"' \
+    -f ./teamspeak-automation.php
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -ne 0 ]; then
