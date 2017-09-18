@@ -1,6 +1,10 @@
 {
+  "bad_nicknames": {
+    "idiot": "That name's not nice"
+  },
   "connection": "serverquery://serveradmin:password@127.0.0.1:10011/?server_port=9987",
   "library_path": "./TS3PHPFramework/libraries/TeamSpeak3/TeamSpeak3.php",
+  "nickname": "Server Bot",
   "time_until_afk": 3600,
   "time_until_inactive": 1209600,
   "times_until_active": 3

@@ -203,6 +203,26 @@
       return $this->clientListDb;
     }
 
+    public function kickBadNames() {
+      $kickedCount = 0;
+      $clientName = "";
+      $clientList = $this->getClientListConnected();
+      global $_CONFIG; $badNames = $_CONFIG["bad_nicknames"];
+      Logger::writeLine(true, Logger::STYLE_LIGHTYELLOW . "Finding bad nicknames...");
+      foreach ($clientList as $client) {
+        $clientName = $client["client_nickname"];
+        foreach ($badNames as $name => $reason) {
+          if (stripos($clientName, $name) !== false) {
+            ++$kickedCount;
+            $client->kick(TeamSpeak3::KICK_SERVER, $reason);
+            Logger::writeLine(true, Logger::STYLE_DARKGRAY . "Kicked " . $clientName . " due to bad nickname" . ($reason ? ": " . $reason : "") . ".");
+            break;
+          }
+        }
+      }
+      Logger::writeLine(true, Logger::STYLE_LIGHTGREEN . "Kicked bad nicknames: " . $kickedCount . ".");
+    }
+
     public function moveAFKs() {
       $movedCount = 0;
       $channelId = $this->ts3->customSearch("afk_channel_cid", "%")[0]["value"];
@@ -366,9 +386,10 @@
 
   $teamspeakcron = new TeamSpeakCron();
   if (is_null($teamspeakcron->connect())) exit(1);
-  $teamspeakcron->setOurNickname("Server Messenger");
+  $teamspeakcron->setOurNickname($_CONFIG["nickname"]);
 
   //$teamspeakcron->demoteInactiveUsers();
+  $teamspeakcron->kickBadNames();
   //$teamspeakcron->moveAFKs();
   $teamspeakcron->notifyOfComplaints();
   //$teamspeakcron->promoteActiveUsers();
