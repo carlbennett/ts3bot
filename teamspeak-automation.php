@@ -133,7 +133,6 @@
     }
 
     public function demoteInactiveUsers() {
-      if (extension_loaded("newrelic")) newrelic_name_transaction("TeamSpeakCron.demoteInactiveUsers");
       global $_CONFIG;
       $timeUntilInactive = $_CONFIG["time_until_inactive"];
       $clientListDb = $this->getClientListDatabase();
@@ -205,7 +204,6 @@
     }
 
     public function moveAFKs() {
-      if (extension_loaded("newrelic")) newrelic_name_transaction("TeamSpeakCron.moveAFKs");
       $movedCount = 0;
       $channelId = $this->ts3->customSearch("afk_channel_cid", "%")[0]["value"];
       $channel = $this->ts3->channelGetById($channelId);
@@ -234,7 +232,6 @@
     }
 
     public function notifyOfComplaints() {
-      if (extension_loaded("newrelic")) newrelic_name_transaction("TeamSpeakCron.notifyOfComplaints");
       $notificationsSent = 0;
       $complaintList = $this->getComplaintList();
       $complaintCount = count($complaintList);
@@ -267,7 +264,6 @@
     }
 
     public function promoteActiveUsers() {
-      if (extension_loaded("newrelic")) newrelic_name_transaction("TeamSpeakCron.promoteActiveUsers");
       /*global $_CONFIG;
       $timesUntilActive = $_CONFIG["times_until_active"];
       $clientList = $this->getClientListConnected();
