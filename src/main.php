@@ -29,9 +29,10 @@ function main($argc, $argv) {
   Common::$exitCode = 0;
 
   Term::stdout(sprintf(
-    '%s-%s' . PHP_EOL,
+    '%s-%s (%s)' . PHP_EOL,
     strtolower(Common::getProjectName()),
-    Common::getVersionString()
+    Common::getVersionString(),
+    Common::getPlatformName()
   ));
 
   // TODO Connect the bot
