@@ -26,6 +26,7 @@
         }
     },
     "require": {
+        "carlbennett/php-mvc": "~2",
         "ext-curl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",

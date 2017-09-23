@@ -5,15 +5,19 @@ if [ $EUID -ne 0 ]; then
     exit 1
 fi
 
-echo -e "Action plan:" 1>&2
-echo -e "  1. pushd $(git rev-parse --show-toplevel)" 1>&2
-echo -e "  2. cp -v ./ts3bot /usr/local/bin/ts3bot" 1>&2
-echo -e "  3. mkdir -vp /var/lib/ts3bot /var/lib/ts3bot/etc" 1>&2
-echo -e "  4. cp -v ./etc/config.json /var/lib/ts3bot/etc/config.json" 1>&2
-echo -e "  5. cp -vr ./src /var/lib/ts3bot/" 1>&2
-echo -e "  6. cp -v ./etc/ts3bot.service /etc/systemd/system/ts3bot.service" 1>&2
-echo -e "  7. systemctl daemon-reload" 1>&2
-echo -e "  8. popd" 1>&2
+echo -e "Plan:" 1>&2
+echo -e "" 1>&2
+echo -e "  1.  pushd $(git rev-parse --show-toplevel)" 1>&2
+echo -e "  2.  cp -v ./ts3bot /usr/local/bin/ts3bot" 1>&2
+echo -e "  3.  mkdir -vp /var/lib/ts3bot /var/lib/ts3bot/etc" 1>&2
+echo -e "  4.  cp -v ./etc/access.json /var/lib/ts3bot/etc/access.json" 1>&2
+echo -e "  5.  cp -v ./etc/connection.json /var/lib/ts3bot/etc/connection.json" 1>&2
+echo -e "  6.  cp -v ./etc/foul_words.json /var/lib/ts3bot/etc/foul_words.json" 1>&2
+echo -e "  7.  cp -v ./etc/options.json /var/lib/ts3bot/etc/options.json" 1>&2
+echo -e "  8.  cp -vr ./lib ./src /var/lib/ts3bot/" 1>&2
+echo -e "  9.  cp -v ./etc/ts3bot.service /etc/systemd/system/ts3bot.service" 1>&2
+echo -e "  10. systemctl daemon-reload" 1>&2
+echo -e "  11. popd" 1>&2
 echo -e "" 1>&2
 read -p "Is this ok [y/N]: " PROMPT
 if [ "${PROMPT}" != "Y" ] && [ "${PROMPT}" != "y" ]; then
@@ -26,8 +30,11 @@ set -ex
 pushd $(git rev-parse --show-toplevel)
 cp -v ./ts3bot /usr/local/bin/ts3bot
 mkdir -vp /var/lib/ts3bot /var/lib/ts3bot/etc
-cp -v ./etc/config.json /var/lib/ts3bot/etc/config.json
-cp -vr ./src /var/lib/ts3bot/
+cp -v ./etc/access.json /var/lib/ts3bot/etc/access.json
+cp -v ./etc/connection.json /var/lib/ts3bot/etc/connection.json
+cp -v ./etc/foul_words.json /var/lib/ts3bot/etc/foul_words.json
+cp -v ./etc/options.json /var/lib/ts3bot/etc/options.json
+cp -vr ./lib ./src /var/lib/ts3bot/
 cp -v ./etc/ts3bot.service /etc/systemd/system/ts3bot.service
 systemctl daemon-reload
 popd

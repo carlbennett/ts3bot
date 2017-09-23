@@ -9,7 +9,7 @@
 namespace CarlBennett\TS3Bot;
 
 use \CarlBennett\TS3Bot\Libraries\Common;
-use \CarlBennett\TS3Bot\Libraries\Term;
+use \CarlBennett\MVC\Libraries\Term;
 
 function main($argc, $argv) {
 
@@ -29,11 +29,11 @@ function main($argc, $argv) {
 
   Common::$exitCode = 0;
 
-  Common::parseArgs($argv);
-  Common::parseConfig();
-
-  Term::stdout(strtolower(Common::getProjectName()) . "-"
-    . Common::getVersionString() . PHP_EOL . PHP_EOL);
+  Term::stdout(sprintf(
+    '%s-%s' . PHP_EOL,
+    strtolower(Common::getProjectName()),
+    Common::getVersionString()
+  ));
 
   // TODO Connect the bot
 

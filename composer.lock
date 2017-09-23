@@ -4,9 +4,70 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "95de70668092fc248da720f5e3303f45",
-    "content-hash": "24371183d351214b43a706607adae895",
+    "hash": "3e7a9be41efdbe92f951211d3396ac1f",
+    "content-hash": "057f9df040a7f5f1bde84394d1fd3b24",
     "packages": [
+        {
+            "name": "carlbennett/php-mvc",
+            "version": "2.3.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/carlbennett/php-mvc.git",
+                "reference": "f518a05d78d7c43bb0554ee951cc6f657cfbc99b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/carlbennett/php-mvc/zipball/f518a05d78d7c43bb0554ee951cc6f657cfbc99b",
+                "reference": "f518a05d78d7c43bb0554ee951cc6f657cfbc99b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-http": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-mcrypt": "*",
+                "ext-memcached": "*",
+                "ext-pdo": "*",
+                "php-64bit": ">=5.5.0"
+            },
+            "suggest": {
+                "ext-geoip": "*",
+                "ext-gmp": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CarlBennett\\MVC\\Libraries\\": "src/libraries"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "AGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Carl Bennett",
+                    "email": "carl@carlbennett.me"
+                }
+            ],
+            "description": "A PHP micro-framework for use as a frontend and/or backend",
+            "homepage": "https://github.com/carlbennett/php-mvc",
+            "keywords": [
+                "api",
+                "backend",
+                "cms",
+                "content",
+                "frontend",
+                "management",
+                "mvc",
+                "php",
+                "rest",
+                "restful",
+                "system"
+            ],
+            "time": "2017-09-23 08:58:32"
+        },
         {
             "name": "planetteamspeak/ts3-php-framework",
             "version": "1.1.25",
