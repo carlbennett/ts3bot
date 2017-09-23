@@ -21,7 +21,6 @@
     },
     "autoload": {
         "psr-4": {
-            "CarlBennett\\TS3Bot\\Exceptions\\": "src/exceptions",
             "CarlBennett\\TS3Bot\\Libraries\\": "src/libraries"
         }
     },
