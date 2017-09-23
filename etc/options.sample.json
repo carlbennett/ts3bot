@@ -1,0 +1,8 @@
+{
+    "bot_nickname": "TS3Bot",
+    "legacy": {
+        "time_until_afk": 3600,
+        "time_until_inactive": 1209600,
+        "times_until_active": 3
+    }
+}

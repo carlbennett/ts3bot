@@ -29,6 +29,7 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "php-64bit": ">=5.5.0"
+        "php-64bit": ">=5.5.0",
+        "planetteamspeak/ts3-php-framework": ">=1.1"
     }
 }

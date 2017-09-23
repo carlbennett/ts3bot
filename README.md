@@ -1,4 +1,4 @@
-# Carl's TS3 Bot
+# Carl's TS3Bot
 ## Summary
 
 This is an MIT-licensed TeamSpeak 3 bot written in php-cli. It acts as a service
