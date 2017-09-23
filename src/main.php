@@ -7,26 +7,25 @@
 
 namespace CarlBennett\TS3Bot;
 
+use \CarlBennett\TS3Bot\Libraries\Bot;
 use \CarlBennett\TS3Bot\Libraries\Common;
 use \CarlBennett\MVC\Libraries\Term;
 
 function main($argc, $argv) {
 
-  if (php_sapi_name() !== "cli") {
+  if (php_sapi_name() !== 'cli') {
     http_response_code(500);
     exit(
-      "This application is only designed for the php-cli package." . PHP_EOL
+      'This application is only designed for the php-cli package.' . PHP_EOL
     );
   }
 
-  if (!file_exists(__DIR__ . "/../lib/autoload.php")) {
+  if (!file_exists(__DIR__ . '/../lib/autoload.php')) {
     exit(
-      "Application misconfigured. Please run `composer install`." . PHP_EOL
+      'Application misconfigured. Please run `composer install`.' . PHP_EOL
     );
   }
-  require(__DIR__ . "/../lib/autoload.php");
-
-  Common::$exitCode = 0;
+  require(__DIR__ . '/../lib/autoload.php');
 
   Term::stdout(sprintf(
     '%s-%s (%s)' . PHP_EOL,
@@ -35,11 +34,20 @@ function main($argc, $argv) {
     Common::getPlatformName()
   ));
 
-  // TODO Connect the bot
+  Common::$exitCode = 0;
+  Common::getConfig();
+
+  if (!Bot::connect()) {
+    return 1;
+  }
+
+  \CarlBennett\TS3Bot\Libraries\Complaints::get();
 
   while (Common::$exitCode === 0) {
     usleep(1000);
   }
+
+  return Common::$exitCode;
 
 }
 
