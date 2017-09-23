@@ -20,7 +20,7 @@
     exit(1);
   }
 
-  global $_CONFIG; $_CONFIG = [];
+  global $_CONFIG; $_CONFIG = array();
   $_CONFIG['connection'] = json_decode(
     file_get_contents('./etc/connection.json'), true
   );

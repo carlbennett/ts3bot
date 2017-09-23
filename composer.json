@@ -19,17 +19,11 @@
     "config": {
       "vendor-dir": "lib"
     },
-    "autoload": {
-        "psr-4": {
-            "CarlBennett\\TS3Bot\\Exceptions\\": "src/exceptions",
-            "CarlBennett\\TS3Bot\\Libraries\\": "src/libraries"
-        }
-    },
     "require": {
         "ext-curl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "php-64bit": ">=5.5.0",
+        "php-64bit": ">=5.4.0",
         "planetteamspeak/ts3-php-framework": ">=1.1"
     }
 }

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "95de70668092fc248da720f5e3303f45",
-    "content-hash": "24371183d351214b43a706607adae895",
+    "hash": "1750f41babe43dcef61a4d26224ba3d1",
+    "content-hash": "76cee0c51fee09549fcf31d2c47503d4",
     "packages": [
         {
             "name": "planetteamspeak/ts3-php-framework",
@@ -65,7 +65,7 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "php-64bit": ">=5.5.0"
+        "php-64bit": ">=5.4.0"
     },
     "platform-dev": []
 }
