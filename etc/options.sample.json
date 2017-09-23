@@ -1,5 +1,22 @@
 {
     "bot_nickname": "TS3Bot",
+    "chat": {
+        "commands": true,
+        "foul_words": {
+            "ban": false,
+            "kick": false,
+            "message": "Censor yourself from banned phrase: %s"
+        },
+        "subscribe": true
+    },
+    "nicknames": {
+        "interval": 5000,
+        "foul_words": {
+            "ban": false,
+            "kick": true,
+            "message": "Remove banned phrase from nickname: %s"
+        }
+    },
     "legacy": {
         "time_until_afk": 3600,
         "time_until_inactive": 1209600,
