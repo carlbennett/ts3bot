@@ -20,8 +20,8 @@ daemon on the Linux platform, primarily aimed for CentOS/Fedora distributions.
 package should be version 5.6 or better.
 
 1. Download a copy of this repository to a CentOS 7.x or Fedora 25+ server.
-2. Copy `/etc/config.sample.json` to `/etc/config.json`.
-3. Modify `/etc/config.json` as desired, importantly the connection string.
+2. Copy sample files and replace `.sample` in the filename under `/etc/`.
+3. Modify `/etc/` as desired, importantly the connection string.
 4. Run `/ts3bot`.
 
 ## Service Daemon
