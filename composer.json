@@ -1,0 +1,35 @@
+{
+    "name": "carlbennett/ts3bot",
+    "description": "Carl's TeamSpeak 3 Bot",
+    "type": "project",
+    "keywords": [
+        "teamspeak",
+        "ts3",
+        "bot",
+        "automation"
+    ],
+    "homepage": "https://github.com/carlbennett/ts3bot",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Carl Bennett",
+            "email": "carl@carlbennett.me"
+        }
+    ],
+    "config": {
+      "vendor-dir": "lib"
+    },
+    "autoload": {
+        "psr-4": {
+            "CarlBennett\\TS3Bot\\Exceptions\\": "src/exceptions",
+            "CarlBennett\\TS3Bot\\Libraries\\": "src/libraries"
+        }
+    },
+    "require": {
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "php-64bit": ">=5.5.0",
+        "planetteamspeak/ts3-php-framework": ">=1.1"
+    }
+}

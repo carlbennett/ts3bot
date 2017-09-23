@@ -8,73 +8,28 @@
     exit(1);
   }
 
+  if (!file_exists(__DIR__ . '/../lib/autoload.php')) {
+    exit(
+      'Application misconfigured. Please run `composer install`.' . PHP_EOL
+    );
+  }
+  require(__DIR__ . '/../lib/autoload.php');
+
   if ($argc > 1) {
     echo "Usage: php -f " . $argv[0] . "\n";
     exit(1);
   }
 
-  global $_CONFIG;
-  $_CONFIG = json_decode(
-    file_get_contents("./teamspeak-automation.json"),
-    true
+  global $_CONFIG; $_CONFIG = [];
+  $_CONFIG['connection'] = json_decode(
+    file_get_contents('./etc/connection.json'), true
   );
-
-  final class Logger {
-
-    const FILENAME    = "/var/log/teamspeak-automation.log";
-    const DATE_FORMAT = "Y-m-d H:i:s O";
-    
-    const STYLE_NORMAL      = "\e[0;0m";
-    const STYLE_BLACK       = "\e[0;30m";
-    const STYLE_DARKGRAY    = "\e[1;30m";
-    const STYLE_LIGHTGRAY   = "\e[0;29m";
-    const STYLE_WHITE       = "\e[1;29m";
-    const STYLE_DARKRED     = "\e[0;31m";
-    const STYLE_LIGHTRED    = "\e[1;31m";
-    const STYLE_DARKGREEN   = "\e[0;32m";
-    const STYLE_LIGHTGREEN  = "\e[1;32m";
-    const STYLE_DARKYELLOW  = "\e[0;33m";
-    const STYLE_LIGHTYELLOW = "\e[1;33m";
-    const STYLE_DARKBLUE    = "\e[0;34m";
-    const STYLE_LIGHTBLUE   = "\e[1;34m";
-    const STYLE_DARKPURPLE  = "\e[0;35m";
-    const STYLE_LIGHTPURPLE = "\e[1;35m";
-    const STYLE_DARKTEAL    = "\e[0;36m";
-    const STYLE_LIGHTTEAL   = "\e[1;36m";
-
-    private static $fileHandle;
-
-    public static function openLog() {
-      self::$fileHandle = fopen(self::FILENAME, "w");
-    }
-
-    public static function closeLog() {
-      fclose(self::$fileHandle);
-    }
-
-    public static function logOpened() {
-      return is_resource(self::$fileHandle);
-    }
-
-    public static function write($use_timestamp, $message) {
-      if ($use_timestamp) {
-        $timestamp = self::STYLE_WHITE . "[" . date(self::DATE_FORMAT) . "] " . self::STYLE_NORMAL;
-        self::write(false, $timestamp);
-      }
-      if (!self::logOpened()) {
-        self::openLog();
-      }
-      if (self::logOpened()) {
-        fwrite(self::$fileHandle, $message);
-      }
-      echo $message;
-    }
-
-    public static function writeLine($use_timestamp, $message) {
-      self::write($use_timestamp, $message . "\n" . self::STYLE_NORMAL);
-    }
-
-  }
+  $_CONFIG['foul_words'] = json_decode(
+    file_get_contents('./etc/foul_words.json'), true
+  );
+  $_CONFIG['options'] = json_decode(
+    file_get_contents("./etc/options.json"), true
+  );
 
   final class Timer {
 
@@ -119,14 +74,14 @@
 
     public function connect() {
       if (isset($this->ts3)) return $this->ts3;
-      Logger::writeLine(true, Logger::STYLE_LIGHTYELLOW . "Connecting to TeamSpeak 3 ServerQuery...");
+      echo 'Connecting to TeamSpeak 3 ServerQuery...' . PHP_EOL;
       try {
         global $_CONFIG;
-        $ts3 = TeamSpeak3::factory($_CONFIG["connection"]);
-        Logger::writeLine(true, Logger::STYLE_LIGHTGREEN . "Connected to TeamSpeak 3 ServerQuery.");
+        $ts3 = TeamSpeak3::factory($_CONFIG["connection"]["uri"]);
+        echo 'Connected to TeamSpeak 3 ServerQuery.' . PHP_EOL;
       } catch (TeamSpeak3_Exception $e) {
         $ts3 = null;
-        Logger::writeLine(true, Logger::STYLE_LIGHTRED . "Failed to connect to TeamSpeak 3 ServerQuery.");
+        echo 'Failed to connect to TeamSpeak 3 ServerQuery.' . PHP_EOL;
       }
       $this->ts3 = $ts3;
       return $this->ts3;
@@ -134,7 +89,7 @@
 
     public function demoteInactiveUsers() {
       global $_CONFIG;
-      $timeUntilInactive = $_CONFIG["time_until_inactive"];
+      $timeUntilInactive = $_CONFIG["options"]["legacy"]["time_until_inactive"];
       $clientListDb = $this->getClientListDatabase();
       $group = $this->ts3->serverGroupGetByName("Active User");
       $currentTime = time();
@@ -143,7 +98,7 @@
         $interval = ($currentTime - $lastConnected);
         if ($interval < $timeUntilInactive) continue;
         $interval_str = TimeString::intervalToString(TimeString::secondsToInterval($interval)[1]);
-        Logger::writeLine(true, Logger::STYLE_DARKGRAY . $client["client_nickname"] . " last connected " . $interval_str . " ago.");
+        echo $client['client_nickname'] . ' last connected ' . $interval_str . ' ago.' . PHP_EOL;
         // TODO: Demote this client from active user group.
       }
     }
@@ -153,14 +108,14 @@
     }
 
     public function getComplaintList() {
-      if (isset($this->comaplaintList)) return $this->complaintList;
-      Logger::writeLine(true, Logger::STYLE_LIGHTYELLOW . "Getting list of complaints...");
+      if (isset($this->complaintList)) return $this->complaintList;
+      echo 'Getting list of complaints...' . PHP_EOL;
       try {
         $complaintList = $this->ts3->complaintList();
-        Logger::writeLine(true, Logger::STYLE_LIGHTGREEN . "Complaints found: " . count($complaintList) . ".");
+        echo 'Complaints found: ' . count($complaintList) . '.' . PHP_EOL;
       } catch (TeamSpeak3_Exception $e) {
         $complaintList = array();
-        Logger::writeLine(true, Logger::STYLE_LIGHTGREEN . "Complaints found: 0.");
+        echo 'Complaints found: 0.' . PHP_EOL;
       }
       $this->complaintList = $complaintList;
       return $this->complaintList;
@@ -168,13 +123,13 @@
 
     public function getClientListConnected() {
       if (isset($this->clientList)) return $this->clientList;
-      Logger::writeLine(true, Logger::STYLE_LIGHTYELLOW . "Getting connected client list...");
+      echo 'Getting connected client list...' . PHP_EOL;
       try {
         $clientList = $this->ts3->clientList();
-        Logger::writeLine(true, Logger::STYLE_LIGHTGREEN . "Other connected clients found: " . (count($clientList) - 1) . ".");
+        echo 'Other connected clients found: ' . (count($clientList) - 1) . '.' . PHP_EOL;
       } catch (TeamSpeak3_Exception $e) {
         $clientList = array();
-        Logger::writeLine(true, Logger::STYLE_LIGHTGREEN . "Connected clients found: 0.");
+        echo 'Connected clients found: 0.' . PHP_EOL;
       }
       $this->clientList = $clientList;
       return $this->clientList;
@@ -191,13 +146,13 @@
 
     public function getClientListDatabase() {
       if (isset($this->clientListDb)) return $this->clientListDb;
-      Logger::writeLine(true, Logger::STYLE_LIGHTYELLOW . "Getting database client list...");
+      echo 'Getting database client list...' . PHP_EOL;
       try {
         $clientList = $this->ts3->clientListDb(0, 25);
-        Logger::writeLine(true, Logger::STYLE_LIGHTGREEN . "Database clients found: " . (count($clientList) - 1) . ".");
+        echo 'Database clients found: ' . (count($clientList) - 1) . '.' . PHP_EOL;
       } catch (TeamSpeak3_Exception $e) {
         $clientList = array();
-        Logger::writeLine(true, Logger::STYLE_LIGHTGREEN . "Database clients found: 0.");
+        echo 'Database clients found: 0.' . PHP_EOL;
       }
       $this->clientListDb = $clientList;
       return $this->clientListDb;
@@ -207,20 +162,20 @@
       $kickedCount = 0;
       $clientName = "";
       $clientList = $this->getClientListConnected();
-      global $_CONFIG; $badNames = $_CONFIG["bad_nicknames"];
-      Logger::writeLine(true, Logger::STYLE_LIGHTYELLOW . "Finding bad nicknames...");
+      global $_CONFIG; $badNames = $_CONFIG["foul_words"];
+      echo 'Finding bad nicknames...' . PHP_EOL;
       foreach ($clientList as $client) {
         $clientName = $client["client_nickname"];
         foreach ($badNames as $name => $reason) {
           if (stripos($clientName, $name) !== false) {
             ++$kickedCount;
             $client->kick(TeamSpeak3::KICK_SERVER, $reason);
-            Logger::writeLine(true, Logger::STYLE_DARKGRAY . "Kicked " . $clientName . " due to bad nickname" . ($reason ? ": " . $reason : "") . ".");
+            echo 'Kicked ' . $clientName . ' due to bad nickname' . ($reason ? ': ' . $reason : '') . '.' . PHP_EOL;
             break;
           }
         }
       }
-      Logger::writeLine(true, Logger::STYLE_LIGHTGREEN . "Kicked bad nicknames: " . $kickedCount . ".");
+      echo 'Kicked bad nicknames: ' . $kickedCount . '.' . PHP_EOL;
     }
 
     public function moveAFKs() {
@@ -229,9 +184,9 @@
       $channel = $this->ts3->channelGetById($channelId);
       $channelName = $channel["channel_name"];
       $clientList = $this->getClientListConnected();
-      global $_CONFIG; $maxIdleTime = $_CONFIG["time_until_afk"];
+      global $_CONFIG; $maxIdleTime = $_CONFIG["options"]["legacy"]["time_until_afk"];
       $maxIdleTimeStr = TimeString::intervalToString(TimeString::secondsToInterval($maxIdleTime)[1]);
-      Logger::writeLine(true, Logger::STYLE_LIGHTYELLOW . "Finding AFK clients...");
+      echo 'Finding AFK clients...' . PHP_EOL;
       foreach ($clientList as $client) {
         if ($client["client_type"] != TeamSpeak3::CLIENT_TYPE_REGULAR) continue;
         if ($client["client_away"] != 0) continue;
@@ -240,7 +195,7 @@
         try {
           ++$movedCount;
           $client->move($channelId, null);
-          Logger::writeLine(true, Logger::STYLE_DARKGRAY . "Moved " . $client["client_nickname"] . " due to being AFK (" . $idleTime . " >= " . $maxIdleTime . ").");
+          echo 'Moved ' . $client['client_nickname'] . ' due to being AFK (' . $idleTime . ' >= ' . $maxIdleTime . ').' . PHP_EOL;
           $client->message("You were moved to [B]" . $channelName . "[/B] because you have been AFK for longer than [B]" . $maxIdleTimeStr . "[/B] and do not have the away status set.");
           $this->ts3->logAdd("TeamSpeak Cronjob: Moved and notified '" . $client . "'(id:" . $client["client_database_id"] . ") for being AFK", TeamSpeak3::LOGLEVEL_INFO);
         } catch (TeamSpeak3_Exception $e) {
@@ -248,7 +203,7 @@
           continue;
         }
       }
-      Logger::writeLine(true, Logger::STYLE_LIGHTGREEN . "Found AFK clients: " . $movedCount . ".");
+      echo 'Found AFK clients: ' . $movedCount . '.' . PHP_EOL;
     }
 
     public function notifyOfComplaints() {
@@ -259,7 +214,7 @@
       $clientList = $this->getClientListConnectedWithPermission("b_client_complain_list");
       foreach ($clientList as $client) {
         if ($client["client_type"] != TeamSpeak3::CLIENT_TYPE_REGULAR) continue;
-        Logger::writeLine(true, Logger::STYLE_DARKGRAY . "Notifying " . $client["client_nickname"] . " of the open complaints.");
+        echo 'Notifying ' . $client['client_nickname'] . ' of the open complaints.' . PHP_EOL;
         $msg = "There " . ($complaintCount != 1 ? "are" : "is") . " " . $complaintCount . " open complaint" . ($complaintCount != 1 ? "s" : "") . ".\n";
         sleep(0.5);
         for ($i = 0; $i < $complaintCount; ++$i) {
@@ -285,14 +240,14 @@
 
     public function promoteActiveUsers() {
       /*global $_CONFIG;
-      $timesUntilActive = $_CONFIG["times_until_active"];
+      $timesUntilActive = $_CONFIG["options"]["legacy"]["times_until_active"];
       $clientList = $this->getClientListConnected();
       $group = $this->ts3->serverGroupGetByName("Active User");
       foreach ($clientList as $client) {
         if ($client["client_type"] != TeamSpeak3::CLIENT_TYPE_REGULAR) continue;
         $total_connections = $client["client_totalconnections"];
         if ($total_connections < $timesUntilActive) continue;
-        Logger::writeLine(true, Logger::STYLE_DARKGRAY . $client["client_nickname"] . " is eligible for active user promotion.");
+        echo $client["client_nickname"] . ' is eligible for active user promotion.' . PHP_EOL;
         // TODO: Promote this client to active user group.
       }*/
     }
@@ -329,7 +284,7 @@
     public static function secondsToInterval($seconds) {
       $s = round($seconds); // Don't overwrite parameters, duh!
       $o =              30; // Constant days in a month
-      
+
       if ($s < 0 || $s > 311039999999)
         throw new OutOfBoundsException("Rule not satisfied: 0 <= value <= 311039999999");
 
@@ -370,23 +325,19 @@
 
   }
 
-  require_once($_CONFIG["library_path"]);
-
   $script_runtime = new Timer();
-  Logger::writeLine(true, Logger::STYLE_LIGHTTEAL . "Script started.");
+  echo 'Script started.' . PHP_EOL;
 
   $exit_code = 1;
 
   register_shutdown_function(function($script_runtime){
-    Logger::writeLine(true, Logger::STYLE_LIGHTTEAL . "Script finished in " . 
-      $script_runtime->formatElapsedTime() . ".");
-    // Return console style to normal upon shutdown:
-    Logger::write(false, Logger::STYLE_NORMAL);
+    echo 'Script finished in ' . $script_runtime->formatElapsedTime() . '.'
+      . PHP_EOL;
   }, $script_runtime);
 
   $teamspeakcron = new TeamSpeakCron();
   if (is_null($teamspeakcron->connect())) exit(1);
-  $teamspeakcron->setOurNickname($_CONFIG["nickname"]);
+  $teamspeakcron->setOurNickname($_CONFIG["options"]["bot_nickname"]);
 
   //$teamspeakcron->demoteInactiveUsers();
   $teamspeakcron->kickBadNames();
