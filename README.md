@@ -1,17 +1,34 @@
-# TeamSpeak Automation
-## Preface
-- Uses TeamSpeak ServerQuery protocol to poll and update.
-- Finds open complaints and notifies users who have access to view complaints.
-- Can move users to an AFK channel based on their inactivity.
-- Promote/demote users to/from a server group based on their activeness level.
+# Carl's TS3 Bot
+## Summary
+
+This is an MIT-licensed TeamSpeak 3 bot written in php-cli. It acts as a service
+daemon on the Linux platform, primarily aimed for CentOS/Fedora distributions.
+
+## What It Does
+
+- Maintains a persistent connection to the TeamSpeak 3 ServerQuery service.
+- Actively listens for commands and calculates an appropriate response.
+- Proactively monitors the server for a variety of conditions.
+
+## What It Does Not Do
+
+- Record or transmit audio or VoIP communication sent and received in channels.
 
 ## Installation
-1. Clone the repository locally.
-2. Run ```git submodule update``` to download the ```TS3PHPFramework```
-   dependency.
-2. Ensure the execute bit is enabled (i.e. unix permissions 0755)
-   for ```/teamspeak-automation.sh``` and that ```/usr/bin/php``` exists.
-3. Copy the ```/teamspeak-automation.sample.json```
-   to `/teamspeak-automation.json``` and update it to your taste.
-4. Run the ```/teamspeak-automation.sh``` using cron or your favorite service
-   manager.
+
+**Prerequisite:** You must have `php` available on the command-line. The php-cli
+package should be version 5.6 or better.
+
+1. Download a copy of this repository to a CentOS 7.x or Fedora 25+ server.
+2. Copy `/etc/config.sample.json` to `/etc/config.json`.
+3. Modify `/etc/config.json` as desired, importantly the connection string.
+4. Run `/ts3bot`.
+
+## Service Daemon
+### Systemd
+Symbolic link the `/etc/ts3bot.service` under `/etc/systemd/system/` and
+reload the systemd daemon. Enable and start the service as desired.
+
+## Disclaimer
+This bot is licensed under the MIT license. There is no warranty given. This
+application is designed with morality, but bugs may cause undefined behavior.

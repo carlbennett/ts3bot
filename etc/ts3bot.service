@@ -1,0 +1,14 @@
+[Unit]
+Description=Carl's TS3 Bot
+After=network.target
+
+[Service]
+WorkingDirectory=/var/lib/ts3bot
+User=nobody
+Group=nobody
+Type=oneshot
+ExecStart=/usr/local/bin/ts3bot
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

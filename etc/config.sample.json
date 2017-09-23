@@ -1,0 +1,62 @@
+{
+    "access": [
+        {
+            "identity": "U1qCmMBGctKSvo8aiBSyNgc99Yo=",
+            "acls": [
+                "log_commands",
+                "superadmin"
+            ]
+        },
+        {
+            "servergroup_id": 16,
+            "acls": [
+                "log_commands",
+                "command_complaints",
+                "command_move_channel_users",
+                "command_move_server_users",
+                "command_foul_words",
+                "command_kick_user",
+                "command_restart_bot",
+                "command_restart_server"
+            ]
+        }
+    ],
+    "connection": "serverquery://serveradmin:password@127.0.0.1:10011/?server_port=9987",
+    "foul_words": [
+        "ass",
+        "bitch",
+        "cum",
+        "cunt",
+        "fag",
+        "fuck",
+        "idiot",
+        "kike",
+        "loser",
+        "nigger",
+        "penis",
+        "shit",
+        "testicle",
+        "twat",
+        "vagina",
+        "your mom"
+    ],
+    "options": {
+        "chat": {
+            "commands": true,
+            "foul_words": {
+                "ban": false,
+                "kick": false,
+                "message": "Do not say banned phrase: %s"
+            },
+            "subscribe": true
+        },
+        "nicknames": {
+            "interval": 5000,
+            "foul_words": {
+                "ban": false,
+                "kick": true,
+                "message": "Remove banned phrase from nickname: %s"
+            }
+        }
+    }
+}
