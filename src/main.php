@@ -1,4 +1,3 @@
-#!/usr/bin/env php
 <?php
 /**
  * Carl's TeamSpeak 3 Bot (TS3Bot)
