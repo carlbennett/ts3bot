@@ -6,6 +6,7 @@ use \CarlBennett\MVC\Libraries\Term;
 use \CarlBennett\TS3Bot\Libraries\Common;
 use \TeamSpeak3 as TS3;
 use \TeamSpeak3_Exception as TS3Exception;
+use \TeamSpeak3_Helper_String as TS3String;
 
 class Bot {
 
@@ -27,12 +28,27 @@ class Bot {
             return false;
         }
 
+        self::setNickname( Common::$config->options->bot_nickname );
+
         return true;
     }
 
     public static function disconnect() {
         if (isset(self::$ts3)) {
             self::$ts3 = null;
+        }
+    }
+
+    public static function setNickname($nickname) {
+        Term::stdout(sprintf(
+            'Setting bot nickname to [%s]' . PHP_EOL, $nickname
+        ));
+        $str = new TS3String($nickname);
+        $cmd = 'clientupdate client_nickname=' . $str->escape();
+        if (self::$ts3->execute($cmd)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
