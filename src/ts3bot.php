@@ -166,11 +166,11 @@
       echo 'Finding bad nicknames...' . PHP_EOL;
       foreach ($clientList as $client) {
         $clientName = $client["client_nickname"];
-        foreach ($badNames as $name => $reason) {
+        foreach ($badNames as $name) {
           if (stripos($clientName, $name) !== false) {
             ++$kickedCount;
-            $client->kick(TeamSpeak3::KICK_SERVER, $reason);
-            echo 'Kicked ' . $clientName . ' due to bad nickname' . ($reason ? ': ' . $reason : '') . '.' . PHP_EOL;
+            $client->kick(TeamSpeak3::KICK_SERVER, 'Banned phrase in nickname: ' . $name);
+            echo 'Kicked ' . $clientName . ' due to bad nickname.' . PHP_EOL;
             break;
           }
         }
