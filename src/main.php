@@ -41,7 +41,6 @@ function main($argc, $argv) {
     return 1;
   }
 
-  Bot::setNickname( Common::$config->options->bot_nickname );
   Bot::registerCommands();
   Bot::registerEvents();
 

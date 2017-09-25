@@ -145,20 +145,6 @@ class Bot {
         TS3Signal::getInstance()->subscribe( 'notifyTextmessage', $callback );
     }
 
-    public static function setNickname($nickname) {
-        Term::stdout(sprintf(
-            'Setting bot nickname to [%s]' . PHP_EOL, $nickname
-        ));
-        self::$ts3->setPredefinedQueryName($nickname);
-        /*$str = new TS3String($nickname);
-        $cmd = 'clientupdate client_nickname=' . $str->escape();
-        if (self::$ts3->execute($cmd)) {
-            return true;
-        } else {
-            return false;
-        }*/
-    }
-
     public static function waitForEvents() {
         self::$ts3->getAdapter()->wait();
     }
