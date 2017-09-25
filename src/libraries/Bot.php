@@ -84,7 +84,7 @@ class Bot {
 
         if (!$command_object instanceof Command) {
             Term::stderr(sprintf(
-                'Command not found [%s]', $command
+                'Command not found [%s]' . PHP_EOL, $command
             ));
             return;
         }
