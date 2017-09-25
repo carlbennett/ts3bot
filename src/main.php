@@ -41,9 +41,12 @@ function main($argc, $argv) {
     return 1;
   }
 
-  \CarlBennett\TS3Bot\Libraries\Complaints::get();
+  Bot::setNickname( Common::$config->options->bot_nickname );
+  Bot::registerCommands();
+  Bot::registerEvents();
 
   while (Common::$exitCode === 0) {
+    Bot::waitForEvents();
     usleep(1000);
   }
 

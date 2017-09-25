@@ -4,11 +4,21 @@ namespace CarlBennett\TS3Bot\Libraries;
 
 use \CarlBennett\MVC\Libraries\Term;
 use \CarlBennett\TS3Bot\Libraries\Bot;
+use \CarlBennett\TS3Bot\Libraries\Complaint;
 use \TeamSpeak3_Exception as TS3Exception;
+use \TeamSpeak3_Helper_String as TS3String;
 
 class Complaints {
 
-    public static function get() {
+  protected static function normalize(&$complaints) {
+        $normalized = array();
+        foreach ($complaints as $item) {
+            $normalized[] = new Complaint($item);
+        }
+        return $normalized;
+    }
+
+    public static function refresh() {
         try {
             $complaintList = Bot::$ts3->complaintList();
             Term::stdout('Getting list of complaints...' . PHP_EOL);
@@ -26,6 +36,7 @@ class Complaints {
                 'Complaints received: %d' . PHP_EOL, count($complaintList)
             ));
         }
+        self::normalize($complaintList);
         return $complaintList;
     }
 

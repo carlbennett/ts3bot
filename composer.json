@@ -21,6 +21,7 @@
     },
     "autoload": {
         "psr-4": {
+            "CarlBennett\\TS3Bot\\Libraries\\Commands\\": "src/libraries/Commands",
             "CarlBennett\\TS3Bot\\Libraries\\": "src/libraries"
         }
     },
