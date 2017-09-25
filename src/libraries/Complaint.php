@@ -2,7 +2,6 @@
 
 namespace CarlBennett\TS3Bot\Libraries;
 
-use \CarlBennett\TS3Bot\Libraries\Complaints;
 use \DateTime;
 use \DateTimeZone;
 use \JsonSerializable;

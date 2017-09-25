@@ -10,7 +10,7 @@ use \TeamSpeak3_Helper_String as TS3String;
 
 class Complaints {
 
-  protected static function normalize(&$complaints) {
+    protected static function normalize(&$complaints) {
         $normalized = array();
         foreach ($complaints as $item) {
             $normalized[] = new Complaint($item);
