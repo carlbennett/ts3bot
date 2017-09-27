@@ -1,6 +1,6 @@
 <?php
 
-namespace CarlBennett\TS3Bot\Libraries\Commands;
+namespace CarlBennett\TS3Bot\Commands;
 
 use \CarlBennett\TS3Bot\Libraries\Command;
 use \TeamSpeak3_Node_Client as TS3Client;

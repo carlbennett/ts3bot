@@ -3,9 +3,12 @@
 namespace CarlBennett\TS3Bot\Libraries;
 
 use \CarlBennett\MVC\Libraries\Term;
+use \CarlBennett\TS3Bot\Commands\Ping as PingCommand;
+use \CarlBennett\TS3Bot\Events\ComplainListRefresh as RefreshComplaintsEvent;
 use \CarlBennett\TS3Bot\Libraries\Command;
-use \CarlBennett\TS3Bot\Libraries\Commands\Ping as PingCommand;
 use \CarlBennett\TS3Bot\Libraries\Common;
+use \CarlBennett\TS3Bot\Libraries\Event;
+use \CarlBennett\TS3Bot\Libraries\EventFactory;
 use \TeamSpeak3 as TS3;
 use \TeamSpeak3_Adapter_ServerQuery_Event as TS3Event;
 use \TeamSpeak3_Exception as TS3Exception;
@@ -18,6 +21,7 @@ class Bot {
     const COMMAND_TRIGGER = '!';
 
     public static $commands = array();
+    public static $events   = null;
     public static $ts3      = null;
 
     public static function connect() {
@@ -94,7 +98,15 @@ class Bot {
     }
 
     public static function invokeTimedEvents() {
-        return;
+        self::$events->rewind();
+
+        while ( self::$events->valid()) {
+            $event = self::$events->current();
+
+            if ( $event->intervalElapsed() ) {
+                $event->invoke();
+            }
+        }
     }
 
     protected static function matchCommand($command) {
@@ -140,6 +152,12 @@ class Bot {
     }
 
     public static function registerEvents() {
+        self::$events = new EventFactory();
+
+        self::$events->attach( new RefreshComplaintsEvent() );
+    }
+
+    public static function registerTS3Events() {
         self::$ts3->notifyRegister('server');
         self::$ts3->notifyRegister('textserver');
         self::$ts3->notifyRegister('textprivate');
