@@ -4,6 +4,7 @@ namespace CarlBennett\TS3Bot\Libraries;
 
 use \CarlBennett\MVC\Libraries\Term;
 use \CarlBennett\TS3Bot\Commands\Ping as PingCommand;
+use \CarlBennett\TS3Bot\Commands\RestartMusicBot as RestartMusicBotCommand;
 use \CarlBennett\TS3Bot\Events\ComplainListRefresh as RefreshComplaintsEvent;
 use \CarlBennett\TS3Bot\Libraries\Command;
 use \CarlBennett\TS3Bot\Libraries\Common;
@@ -149,6 +150,7 @@ class Bot {
 
     public static function registerCommands() {
         self::$commands[] = new PingCommand();
+        self::$commands[] = new RestartMusicBotCommand();
     }
 
     public static function registerEvents() {
