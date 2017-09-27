@@ -43,6 +43,7 @@ function main($argc, $argv) {
 
   Bot::registerCommands();
   Bot::registerEvents();
+  Bot::registerTS3Events();
 
   while (Common::$exitCode === 0) {
     Bot::invokeTimedEvents();
