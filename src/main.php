@@ -45,6 +45,7 @@ function main($argc, $argv) {
   Bot::registerEvents();
 
   while (Common::$exitCode === 0) {
+    Bot::invokeTimedEvents();
     Bot::waitForEvents();
     usleep(1000);
   }

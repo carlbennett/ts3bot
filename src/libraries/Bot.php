@@ -93,6 +93,10 @@ class Bot {
         $command_object->invoke($client, $arguments);
     }
 
+    public static function invokeTimedEvents() {
+        return;
+    }
+
     protected static function matchCommand($command) {
         foreach (self::$commands as $object) {
             if ($object->match($command)) {
