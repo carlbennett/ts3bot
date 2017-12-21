@@ -222,8 +222,7 @@
           // sample complaint: tcldbid=51 tname=Almirith fcldbid=2 fname=Jailout2000 message=test timestamp=1399825855
           $tclient   = $this->ts3->clientGetByDbid($complaint["tcldbid"]);
           $fclient   = $this->ts3->clientGetByDbid($complaint["fcldbid"]);
-          $timestamp = new DateTime("@" . $complaint["timestamp"]);
-          $timestamp->setTimezone(new DateTimeZone("America/Chicago"));
+          $timestamp = new DateTime('@' . $complaint['timestamp'], new DateTimeZone('America/Chicago'));
           $msg .= "[B][I]Complaint " . ($i + 1) . " of " . $complaintCount . "...[/I][/B]\n";
           $msg .= "  [B]From:[/B] [COLOR=#c00000]" . $complaint["fname"] . "[/COLOR] ([COLOR=#006000]" . ($fclient ? $fclient["client_unique_identifier"] : "[I]unknown[/I]") . "[/COLOR])\n";
           $msg .= "  [B]To:[/B] [COLOR=#c00000]" . $complaint["tname"] . "[/COLOR] ([COLOR=#006000]" . ($tclient ? $tclient["client_unique_identifier"] : "[I]unknown[/I]") . "[/COLOR])\n";
